@@ -3,7 +3,7 @@ import networkx as nx
 import matplotlib.pyplot as plt
 
 # Load your dataset
-df = pd.read_csv('Airports2.csv')
+df = pd.read_csv('/Users/sarahpeng/Desktop/Airports2.csv')
 print(df.head(10))
 
 
@@ -38,7 +38,7 @@ pos = nx.spring_layout(G, k=0.1)
 edge_weights = [G[u][v]['weight'] / 100 for u, v in G.edges()]  # Adjust scaling factor as needed
 nx.draw_networkx_edges(G, pos, width=edge_weights)
 nx.draw_networkx_nodes(G, pos, node_size=50)
-nx.draw_networkx_edges(G, pos, width=0.5)
+#nx.draw_networkx_edges(G, pos, width=0.5)
 nx.draw_networkx_labels(G, pos, font_size=8)
 plt.title('US Domestic Air Traffic Network (2009)')
 plt.show()
@@ -69,11 +69,13 @@ plt.show()
 degree_centrality = nx.degree_centrality(G)
 in_degree_centrality = nx.in_degree_centrality(G)
 out_degree_centrality = nx.out_degree_centrality(G)
+betweenness_centrality = nx.betweenness_centrality(G)
 
 # Create dataframes to view the top 10 airports based on each centrality measure
 degree_centrality_df = pd.DataFrame(degree_centrality.items(), columns=['Airport', 'Degree_Centrality']).sort_values(by='Degree_Centrality', ascending=False)
 in_degree_centrality_df = pd.DataFrame(in_degree_centrality.items(), columns=['Airport', 'In_Degree_Centrality']).sort_values(by='In_Degree_Centrality', ascending=False)
 out_degree_centrality_df = pd.DataFrame(out_degree_centrality.items(), columns=['Airport', 'Out_Degree_Centrality']).sort_values(by='Out_Degree_Centrality', ascending=False)
+betweenness_centrality_df = pd.DataFrame(betweenness_centrality.items(), columns=['Airport', 'Between_Centrality']).sort_values(by='Between_Centrality', ascending=False)
 
 # Display the top 10 airports for each centrality measure
 print("Top 10 Airports by Degree Centrality")
@@ -82,6 +84,8 @@ print("\nTop 10 Airports by In-Degree Centrality")
 print(in_degree_centrality_df.head(10))
 print("\nTop 10 Airports by Out-Degree Centrality")
 print(out_degree_centrality_df.head(10))
+print("\nTop 10 Airports by Betweenness Centrality")
+print(betweenness_centrality_df.head(10))
 
 # Plot the top 10 airports by degree centrality
 top_degree_airports = degree_centrality_df.head(10)['Airport'].tolist()
